@@ -43,7 +43,7 @@ public class SolrServer {
 		SolrQuery params = new SolrQuery();
 		String param = ClientUtils.escapeQueryChars(query);
 		try{
-			params.set("q","text:"+"\""+param+"\"");
+			params.set("q","text:"+param);
 			params.set("start",(page-1)*num);
 			params.set("rows", num);
 			QueryResponse result = solrClient.query(params);
@@ -72,14 +72,14 @@ public class SolrServer {
 		SolrQuery solrQuery = new SolrQuery();
 		String param = ClientUtils.escapeQueryChars(query);
 		try{
-			solrQuery.set("q", "id:"+"\""+param+"\"");
-			solrQuery.set("start", (page-1)*num);
-			solrQuery.set("rows","num");
+			solrQuery.set("q", "id:*"+param+"*");
+			solrQuery.set("start",(page-1)*num);
+			solrQuery.set("rows", num);
 			QueryResponse result = solrClient.query(solrQuery);
 			SolrDocumentList solrDoList = result.getResults();
 			solrPage.setAllNum(solrDoList.getNumFound());
 			solrPage.setPage(page);
-			for(SolrDocument a: solrDoList){
+			for(SolrDocument a : solrDoList){
 				list.add(a.get("id").toString());
 			}
 			solrPage.setList(list);
